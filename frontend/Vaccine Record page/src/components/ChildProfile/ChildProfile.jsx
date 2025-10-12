@@ -495,3 +495,147 @@ const UpdateProfile = ({ profiles, handleSave }) => {
 };
 
 export default ChildProfile;
+
+/*
+const ChildProfile = () => {
+  const [profiles, setProfiles] = useState([]);
+  const [newProfile, setNewProfile] = useState(initialProfileState);
+  const navigate = useNavigate();
+
+  // Fetch child profiles from the server when the component loads
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/parent/child/children', {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.data.success) {
+          console.log(response.data.data);
+          setProfiles(response.data.data);
+        } else {
+          console.error('Error fetching child list');
+        }
+      } catch (error) {
+        console.log('Error fetching profiles', error);
+      }
+    };
+    fetchProfiles();
+  }, []);
+
+  // Save new or updated profile
+  const handleSave = (profile, isNewProfile = false) => {
+    if (isNewProfile) {
+      // Add new profile with a temporary ID
+      setProfiles(prev => [...prev, { ...profile, _id: `CHD${Date.now()}` }]);
+    } else {
+      // Update existing profile
+      setProfiles(prev => prev.map(p => p._id === profile._id ? profile : p));
+    }
+    navigate('/parent/cp/profiles'); // Navigate back to the profiles list after saving
+  };
+
+  return (
+    <div className="flex bg-blue-50 min-h-screen">
+      <Sidebar />
+      <div className="flex-1 p-8 overflow-y-auto">
+        <Routes>
+          {// Child Profiles List //}
+          <Route path="profiles" element={
+            <>
+              <h2 className="text-3xl font-bold mb-6 text-blue-800">Child Profiles</h2>
+              {profiles.length === 0 ? (
+                <p>No child profiles available.</p>
+              ) : (
+                profiles.map(profile => (
+                  <div key={profile._id} className="mb-6"> {/* Use _id as the key //}
+                    <ChildProfileView profile={profile} />
+                    <Link
+                      to={`parent/cp/update/${profile._id}`} // Use _id in the link
+                      className="mt-2 inline-block bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+                    >
+                      Update Profile
+                    </Link>
+                  </div>
+                ))
+              )}
+            </>
+          } />
+
+          {// Update Child Profile //}
+          <Route path="update/:id" element={
+            <UpdateProfile profiles={profiles} handleSave={handleSave} />
+          } />
+
+          {/* Add New Child Profile //}
+          <Route path="add" element={
+            <>
+              <h2 className="text-3xl font-bold mb-6 text-blue-800">Add New Child</h2>
+              <ProfileForm
+                profile={newProfile}
+                setProfile={setNewProfile}
+                onSave={() => handleSave(newProfile, true)} // Pass true for new profile
+                isNewProfile={true} // Indicate this is a new profile
+              />
+            </>
+          } />
+
+          {/* Settings Page//}
+          <Route path="settings" element={
+            <>
+              <h2 className="text-3xl font-bold mb-6 text-blue-800">Settings</h2>
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <p>Settings page content goes here.</p>
+              </div>
+            </>
+          } />
+
+          {/* Connect With Doctor //}
+          <Route path="doctor" element={
+            <>
+              <h2 className="text-3xl font-bold mb-6 text-blue-800">Connect With Doctor</h2>
+              <ConnectWithDoctor />
+            </>
+          } />
+        </Routes>
+      </div>
+    </div>
+  );
+};
+
+
+
+<ConnectWithDoctor />
+
+// Update profile component
+const UpdateProfile = ({ profiles, handleSave }) => {
+  const { id } = useParams();
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const profileToUpdate = profiles?.find(p => p._id === id);
+    if (profileToUpdate) {
+      setProfile(profileToUpdate || null);
+    }
+  }, [id, profiles]);
+
+  if (!profile) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <>
+      <h2 className="text-3xl font-bold mb-6 text-blue-800">Update Profile</h2>
+      <ProfileForm
+        profile={profile}
+        setProfile={setProfile}
+        onSave={() => handleSave(profile)}
+        isNewProfile={false}
+      />
+    </>
+  );
+};
+
+export default ChildProfile;
+
+*/
